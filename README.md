@@ -1,3 +1,1 @@
-# Little Nebula template
-
-Little Nebulae's library template
+# Superjson wrapper library

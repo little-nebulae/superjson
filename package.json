@@ -26,6 +26,9 @@
     "test": "vitest run",
     "try": "oxnode ./src/try.ts"
   },
+  "dependencies": {
+    "superjson": "2.2.6"
+  },
   "devDependencies": {
     "@arethetypeswrong/core": "0.18.5",
     "@oxc-node/cli": "0.1.6",
@@ -49,8 +52,5 @@
       "onFail": "warn"
     }
   },
-  "packageManager": "pnpm@12.11.2",
-  "dependencies": {
-    "superjson": "2.2.6"
-  }
+  "packageManager": "pnpm@12.11.2"
 }

@@ -8,7 +8,7 @@ import { serialize } from "superjson";
 
 import type { SuperJSONResultOf } from "@/types";
 
-export function attemptSerialize<T>(value: T) {
+export function superjsonSerialize<T>(value: T) {
   return attempt({
     tryFn: () => serialize(value) as SuperJSONResultOf<T>,
     catchFn: (error) =>

@@ -10,7 +10,7 @@ import { deserialize } from "superjson";
 
 import type { SuperJSONResultOf, SuperJSONResultOfTagName } from "@/types";
 
-export function attemptDeserialize<T extends SuperJSONResultOf<unknown>>(
+export function superjsonDeserialize<T extends SuperJSONResultOf<unknown>>(
   value: T,
   inPlace: boolean = false,
 ) {

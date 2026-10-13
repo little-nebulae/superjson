@@ -1,16 +1,16 @@
 import { unwrap } from "@little-nebulae/result";
 import { expectTypeOf, test } from "vitest";
 
-import { attemptDeserialize } from "@/attempt/deserialize";
-import { attemptSerialize } from "@/attempt/serialize";
+import { superjsonDeserialize } from "@/ops/deserialize";
+import { superjsonSerialize } from "@/ops/serialize";
 
-test("attemptDeserialize should recover the original type passed to attemptSerialize", () => {
+test("superjsonDeserialize should recover the original type passed to superjsonSerialize", () => {
   const object = {
     normal: "string",
     timestamp: new Date(),
     test: /superjson/,
   };
-  const serializeResult = unwrap(attemptSerialize(object));
-  const deserializeResult = unwrap(attemptDeserialize(serializeResult));
+  const serializeResult = unwrap(superjsonSerialize(object));
+  const deserializeResult = unwrap(superjsonDeserialize(serializeResult));
   expectTypeOf(deserializeResult).toEqualTypeOf(object);
 });

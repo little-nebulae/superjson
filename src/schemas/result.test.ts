@@ -1,7 +1,7 @@
 import { deserialize, serialize } from "superjson";
 import { assert, expect, test } from "vitest";
 
-import { SuperJSONResultSchema } from "@/schemas";
+import { SuperJSONResultSchema } from "@/schemas/result";
 
 // Success case
 test("SuperJSONResultSchema should parse the result from serialize for supported types", () => {

@@ -4,10 +4,10 @@ import { z } from "zod";
 
 export const SuperJSONResultSchema = z
   .strictObject({
-    json: z.json(),
+    json: z.unknown(),
     meta: z
       .strictObject({
-        values: z.json(),
+        values: z.unknown(),
         referentialEqualities: z.union([
           z.record(z.string(), z.array(z.string())),
           z.tuple([z.array(z.string())]),

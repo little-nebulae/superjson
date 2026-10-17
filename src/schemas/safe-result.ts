@@ -9,9 +9,13 @@ export const SafeSuperJSONResultSchema = z.object({
       z.object({ success: true }),
       z.object({ success: false, error: z.string() }),
     ]),
-    metaValues: z.discriminatedUnion("success", [
-      z.object({ success: true }),
-      z.object({ success: false, error: z.string() }),
-    ]),
+    metaValues: z
+      .discriminatedUnion("success", [
+        z.object({ success: true }),
+        z.object({ success: false, error: z.string() }),
+      ])
+      .exactOptional(),
   }),
 });
+
+export type SafeSuperJSONResult = z.infer<typeof SafeSuperJSONResultSchema>;

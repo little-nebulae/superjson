@@ -1,8 +1,4 @@
-import {
-  composeErrorMessage,
-  DEFAULT_FAILURE_REASON,
-  UnexpectedError,
-} from "@little-nebulae/error";
+import { composeErrorMessage, UnexpectedError } from "@little-nebulae/error";
 import { attempt } from "@little-nebulae/result";
 import { serialize } from "superjson";
 
@@ -15,7 +11,6 @@ export function superjsonSerialize<T>(value: T) {
       new UnexpectedError({
         message: composeErrorMessage({
           operation: "serialize value",
-          reason: DEFAULT_FAILURE_REASON,
         }),
         cause: error,
         meta: null,

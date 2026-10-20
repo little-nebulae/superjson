@@ -1,10 +1,6 @@
 import type { Result } from "@little-nebulae/result";
 
-import {
-  composeErrorMessage,
-  DEFAULT_FAILURE_REASON,
-  UnexpectedError,
-} from "@little-nebulae/error";
+import { composeErrorMessage, UnexpectedError } from "@little-nebulae/error";
 import { attempt } from "@little-nebulae/result";
 import { ZodIssueSchema } from "@little-nebulae/zod-schemas";
 import { serialize } from "superjson";
@@ -48,7 +44,6 @@ export function superjsonDetailedSerialize<T>(
       new UnexpectedError({
         message: composeErrorMessage({
           operation: "serialize value in details",
-          reason: DEFAULT_FAILURE_REASON,
         }),
         cause: error,
         meta: null,

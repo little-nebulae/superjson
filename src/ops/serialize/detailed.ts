@@ -1,8 +1,8 @@
 import type { Result } from "@little-nebulae/result";
+import type { ZodIssue } from "@little-nebulae/zod-schemas";
 
 import { composeErrorMessage, UnexpectedError } from "@little-nebulae/error";
 import { attempt } from "@little-nebulae/result";
-import { ZodIssueSchema } from "@little-nebulae/zod-schemas";
 import { serialize } from "superjson";
 import { z } from "zod";
 
@@ -24,14 +24,11 @@ export function superjsonDetailedSerialize<T>(
       }
       const error = parseJsonResult.error;
       const issues = error.issues;
-      if (
-        z.json().validate(issues) &&
-        z.array(ZodIssueSchema).validate(issues)
-      ) {
+      if (z.json().validate(issues)) {
         return {
           lossless: false,
           result: superjsonResult as SuperJSONResultOf<T>,
-          issues: { format: "raw", value: issues },
+          issues: { format: "raw", value: issues as ZodIssue[] },
         };
       }
       return {

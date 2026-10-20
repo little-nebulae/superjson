@@ -6,6 +6,8 @@ import {
 } from "@little-nebulae/zod-schemas";
 import { z } from "zod";
 
+import type { SuperJSONResultOf } from "@/types";
+
 import { JSONValueSchema } from "@/schemas/json-value";
 import { MinimisedTypeAnnotationTreeSchema } from "@/schemas/minimised-tree";
 import { ReferentialEqualityAnnotationsSchema } from "@/schemas/referential-equality-annotations";
@@ -22,20 +24,29 @@ export const SuperJSONResultSchema = z.object({
     .exactOptional(),
 });
 
-export const DetailedSuperJSONResultSchema = z.discriminatedUnion("lossless", [
-  z.object({ lossless: z.literal(true), result: SuperJSONResultSchema }),
-  z.object({
-    lossless: z.literal(false),
-    result: z.object({
-      ...SuperJSONResultSchema.shape,
-      json: z.custom<SuperJSONResult["json"]>(), // Intentionally no validation
+export function DetailedSuperJSONResultSchema<T>() {
+  return z.discriminatedUnion("lossless", [
+    z.object({
+      lossless: z.literal(true),
+      result: SuperJSONResultSchema.transform(
+        (value) => value as SuperJSONResultOf<T>,
+      ),
     }),
-    issues: z.discriminatedUnion("format", [
-      z.object({ format: "raw", value: z.array(ZodIssueSchema) }),
-      z.object({ format: "pretty", value: NonEmptyStringSchema }),
-    ]),
-  }),
-]);
-export type DetailedSuperJSONResult = z.infer<
-  typeof DetailedSuperJSONResultSchema
+    z.object({
+      lossless: z.literal(false),
+      result: z
+        .object({
+          ...SuperJSONResultSchema.shape,
+          json: z.custom<SuperJSONResult["json"]>(), // Intentionally no validation
+        })
+        .transform((value) => value as SuperJSONResultOf<T>),
+      issues: z.discriminatedUnion("format", [
+        z.object({ format: z.literal("raw"), value: z.array(ZodIssueSchema) }),
+        z.object({ format: z.literal("pretty"), value: NonEmptyStringSchema }),
+      ]),
+    }),
+  ]);
+}
+export type DetailedSuperJSONResult<T> = z.infer<
+  ReturnType<typeof DetailedSuperJSONResultSchema<T>>
 >;

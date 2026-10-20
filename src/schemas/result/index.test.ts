@@ -17,8 +17,11 @@ describe("SuperJSONResultSchema should succeed", () => {
     assert(parseResult.success);
     expect(deserialize(parseResult.data)).toStrictEqual(object);
   });
+});
 
-  test("even when it parses the result from serialize for unsupported types", () => {
+// Failure cases
+describe("SuperJSONResultSchema should fail", () => {
+  test("when it parses the result from serialize for unsupported types", () => {
     const object = {
       request: new Request("https://example.com"),
       fetch,
@@ -27,7 +30,12 @@ describe("SuperJSONResultSchema should succeed", () => {
     const serializeResult = serialize(object);
     const parseResult = SuperJSONResultSchema.safeParse(serializeResult);
 
-    assert(parseResult.success);
-    expect(deserialize(parseResult.data)).toStrictEqual(object);
+    assert(parseResult.success === false);
+    const issues = parseResult.error.issues;
+    expect(issues).toHaveLength(1);
+    const [issue] = issues;
+    assert(issue);
+    expect(issue.code).toBe("invalid_union");
+    expect(issue.path).toStrictEqual(["json"]);
   });
 });

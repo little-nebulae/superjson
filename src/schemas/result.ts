@@ -2,18 +2,15 @@ import type { SuperJSONResult } from "superjson";
 
 import { z } from "zod";
 
-export const ReferentialEqualityAnnotationsSchema = z.union([
-  z.record(z.string(), z.array(z.string())),
-  z.tuple([z.array(z.string())]),
-  z.tuple([z.array(z.string()), z.record(z.string(), z.array(z.string()))]),
-]);
+import { ReferentialEqualityAnnotationsSchema } from "@/schemas/result/meta/referential-equality-annotations";
+import { MinimisedTypeAnnotationTreeSchema } from "@/schemas/result/meta/values/minimised-tree";
 
 export const SuperJSONResultSchema = z
   .object({
     json: z.unknown(),
     meta: z
       .object({
-        values: z.unknown(),
+        values: MinimisedTypeAnnotationTreeSchema,
         referentialEqualities: ReferentialEqualityAnnotationsSchema,
         v: z.number(),
       })

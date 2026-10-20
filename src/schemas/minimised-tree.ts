@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { TypeAnnotationSchema } from "@/schemas/result/meta/values/type-annotation";
+import { TypeAnnotationSchema } from "@/schemas/type-annotation";
 
 type Leaf<T> = [T];
 type InnerNode<T> = [T, Record<string, Tree<T>>];

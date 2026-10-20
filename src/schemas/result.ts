@@ -1,6 +1,9 @@
 import type { SuperJSONResult } from "superjson";
 
-import { ZodIssueSchema } from "@little-nebulae/zod-schemas";
+import {
+  NonEmptyStringSchema,
+  ZodIssueSchema,
+} from "@little-nebulae/zod-schemas";
 import { z } from "zod";
 
 import { JSONValueSchema } from "@/schemas/json-value";
@@ -19,15 +22,20 @@ export const SuperJSONResultSchema = z.object({
     .exactOptional(),
 });
 
-export const RichSuperJSONResultSchema = z.discriminatedUnion("safe", [
-  z.object({ safe: z.literal(true), result: SuperJSONResultSchema }),
+export const DetailedSuperJSONResultSchema = z.discriminatedUnion("lossless", [
+  z.object({ lossless: z.literal(true), result: SuperJSONResultSchema }),
   z.object({
-    safe: z.literal(false),
+    lossless: z.literal(false),
     result: z.object({
       ...SuperJSONResultSchema.shape,
       json: z.custom<SuperJSONResult>(), // Intentionally no validation
     }),
-    issues: z.array(ZodIssueSchema),
+    issues: z.discriminatedUnion("format", [
+      z.object({ format: "raw", value: z.array(ZodIssueSchema) }),
+      z.object({ format: "pretty", value: NonEmptyStringSchema }),
+    ]),
   }),
 ]);
-export type RichSuperJSONResult = z.infer<typeof RichSuperJSONResultSchema>;
+export type DetailedSuperJSONResult = z.infer<
+  typeof DetailedSuperJSONResultSchema
+>;

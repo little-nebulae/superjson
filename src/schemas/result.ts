@@ -28,7 +28,7 @@ export const DetailedSuperJSONResultSchema = z.discriminatedUnion("lossless", [
     lossless: z.literal(false),
     result: z.object({
       ...SuperJSONResultSchema.shape,
-      json: z.custom<SuperJSONResult>(), // Intentionally no validation
+      json: z.custom<SuperJSONResult["json"]>(), // Intentionally no validation
     }),
     issues: z.discriminatedUnion("format", [
       z.object({ format: "raw", value: z.array(ZodIssueSchema) }),

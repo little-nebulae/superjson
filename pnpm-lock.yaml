@@ -180,8 +180,8 @@ importers:
         specifier: 1.4.0
         version: 1.4.0
       '@little-nebulae/zod-schemas':
-        specifier: 0.1.0
-        version: 0.1.0(type-fest@5.10.0)(zod@4.6.7)
+        specifier: 0.2.0
+        version: 0.2.0(type-fest@5.10.0)(zod@4.6.7)
       '@oxc-node/cli':
         specifier: 0.1.7
         version: 0.1.7
@@ -246,8 +246,8 @@ packages:
   '@little-nebulae/result@1.4.0':
     resolution: {integrity: sha512-ItjYTaBxSXQf1+bxL6hqpySq2oG+STTCrGLxnHAZKNRrxfVt6MoC0LZvxKaOKB/VNr0uNfKvX/cKHJiWDYb5ZQ==}
 
-  '@little-nebulae/zod-schemas@0.1.0':
-    resolution: {integrity: sha512-yzlAPV3VVWg0oCJuhPkatOoD+UK7ZfovysJYMYTmKnHEEYWp5eO9BSCYyf5A0mYV3i5+fBbFlI87VaSkxOqSxQ==}
+  '@little-nebulae/zod-schemas@0.2.0':
+    resolution: {integrity: sha512-QahrHRKjeShZPCXGAQuCms0fUWI1gWQUGTPbs5T+yeI8/ZllfxlX7Z20XhI3YXVnizza8L3FOwChMP74Z+43Vg==}
     peerDependencies:
       type-fest: ^5.0.0
       zod: ^4.0.0
@@ -1452,7 +1452,7 @@ snapshots:
 
   '@little-nebulae/result@1.4.0': {}
 
-  '@little-nebulae/zod-schemas@0.1.0(type-fest@5.10.0)(zod@4.6.7)':
+  '@little-nebulae/zod-schemas@0.2.0(type-fest@5.10.0)(zod@4.6.7)':
     dependencies:
       type-fest: 5.10.0
       zod: 4.6.7

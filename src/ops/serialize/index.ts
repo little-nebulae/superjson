@@ -1,16 +1,31 @@
 import { composeErrorMessage, UnexpectedError } from "@little-nebulae/error";
-import { attempt } from "@little-nebulae/result";
-import { serialize } from "superjson";
+import { attempt, unwrap } from "@little-nebulae/result";
 
-import type { SuperJSONResultOf } from "@/types";
+import type {
+  CustomSuperJSON,
+  SuperJSONResultOf,
+  SuperJSONValue,
+} from "@/types";
 
-export function superjsonSerialize<T>(value: T) {
+import { createSuperJSON } from "@/ops/create";
+
+export function superjsonSerialize<T extends SuperJSONValue>({
+  value,
+  superjson,
+}: {
+  value: T;
+  superjson?: CustomSuperJSON;
+}) {
   return attempt({
-    tryFn: () => serialize(value) as SuperJSONResultOf<T>,
+    tryFn: () => {
+      const instance = superjson ?? unwrap(createSuperJSON());
+      const result = instance.serialize(value);
+      return result as SuperJSONResultOf<T>;
+    },
     catchFn: (error) =>
       new UnexpectedError({
         message: composeErrorMessage({
-          operation: "serialize value",
+          operation: "use superjson to serialize value",
         }),
         cause: error,
         meta: null,

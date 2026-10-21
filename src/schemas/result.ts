@@ -27,23 +27,25 @@ export const SuperJSONResultSchema = z.object({
 export function DetailedSuperJSONResultSchema<T>() {
   return z.discriminatedUnion("lossy", [
     z.object({
-      lossy: z.literal(true),
-      result: z
-        .object({
-          ...SuperJSONResultSchema.shape,
-          json: z.custom<SuperJSONResult["json"]>(), // Intentionally no validation
-        })
-        .transform((value) => value as SuperJSONResultOf<T>),
-      issues: z.discriminatedUnion("format", [
-        z.object({ format: z.literal("raw"), value: z.array(ZodIssueSchema) }),
-        z.object({ format: z.literal("pretty"), value: NonEmptyStringSchema }),
-      ]),
-    }),
-    z.object({
       lossy: z.literal(false),
-      result: SuperJSONResultSchema.transform(
+      output: SuperJSONResultSchema.transform(
         (value) => value as SuperJSONResultOf<T>,
       ),
+    }),
+    z.object({
+      lossy: z.literal(true),
+      output: z.object({
+        ...SuperJSONResultSchema.shape,
+        // Intentionally no validation + type casting so deserialize can still accept it
+        json: z.custom<SuperJSONResult["json"]>(),
+      }),
+      issues: z.discriminatedUnion("format", [
+        z.object({
+          format: z.literal("raw"),
+          value: z.array(ZodIssueSchema),
+        }),
+        z.object({ format: z.literal("pretty"), value: NonEmptyStringSchema }),
+      ]),
     }),
   ]);
 }

@@ -1,6 +1,6 @@
 import { deserialize, serialize } from "superjson";
-import { sc2Match, sc2Replay } from "test/fixtures";
-import { describe, expect, test } from "vitest";
+import { sc2Error, sc2Match, sc2Replay } from "test/fixtures";
+import { assert, describe, expect, test } from "vitest";
 
 // Success cases
 describe("superjson should succeed", () => {
@@ -18,5 +18,27 @@ describe("superjson should succeed", () => {
     expect(() => JSON.stringify(result)).not.toThrow();
     const value = deserialize(result);
     expect(value).toStrictEqual(sc2Replay);
+  });
+
+  test("at handling instance of Error but the result will be lossy", () => {
+    const fixture = sc2Error;
+
+    const result = serialize(fixture);
+    expect(result.meta).toBeDefined();
+    const json = result.json;
+    expect(json).not.toMatchObject(fixture);
+    expect(json).toStrictEqual({
+      name: fixture.name,
+      message: fixture.message,
+    });
+
+    expect(() => JSON.stringify(result)).not.toThrow();
+
+    const value = deserialize(result);
+    assert(value instanceof Error);
+    expect(value).toMatchObject(fixture);
+    expect(value).not.toStrictEqual(fixture);
+    expect(Object.hasOwn(value, "name")).toBe(true);
+    expect(Object.hasOwn(fixture, "name")).toBe(false);
   });
 });

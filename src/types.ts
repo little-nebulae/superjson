@@ -11,7 +11,8 @@ export type SerializableJSONValue =
   | undefined
   | bigint
   | Date
-  | RegExp;
+  | RegExp
+  | URL;
 
 export interface SuperJSONArray extends Array<SuperJSONValue> {}
 export interface SuperJSONObject {

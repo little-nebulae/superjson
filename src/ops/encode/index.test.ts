@@ -1,23 +1,25 @@
 import { unwrap } from "@little-nebulae/result";
 import { deserialize } from "superjson";
 import { sc2Match, sc2Replay } from "test/fixtures";
-import { assert, describe, expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 
-import { superjsonSerialize } from "@/ops/serialize";
+import { createSuperJSONCodec } from "@/ops/create";
+import { superjsonEncode } from "@/ops/encode";
+
+const codec = unwrap(createSuperJSONCodec());
 
 // Success cases
-describe("superjsonSerialize should succeed", () => {
-  test("at serializing data types that are supported by JSON.stringify", () => {
-    const result = superjsonSerialize(sc2Match);
-    assert(result.success);
-    expect(result.data.json).toStrictEqual(sc2Match);
-    expect(result.data.meta).toBeUndefined();
+describe("superjsonEncode should succeed", () => {
+  test("at encoding data types that are supported by JSON.stringify", () => {
+    const output = unwrap(superjsonEncode({ input: sc2Match, codec }));
+    expect(output.json).toStrictEqual(sc2Match);
+    expect(output.meta).toBeUndefined();
   });
 
-  test("at serializing additional data types that are supported by SuperJSON (this test doesn't cover Error)", () => {
-    const superjsonResult = unwrap(superjsonSerialize(sc2Replay));
-    expect(superjsonResult.meta).toBeDefined();
-    const deserializedValue = deserialize(superjsonResult);
+  test("at encoding additional data types that are supported by SuperJSON (this test doesn't cover Error)", () => {
+    const output = unwrap(superjsonEncode({ input: sc2Replay, codec }));
+    expect(output.meta).toBeDefined();
+    const deserializedValue = deserialize(output);
     expect(deserializedValue).toStrictEqual(sc2Replay);
   });
 });

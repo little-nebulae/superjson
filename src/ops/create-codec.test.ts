@@ -5,8 +5,9 @@ import { describe, expect, test } from "vitest";
 import { superjsonCreateCodec } from "@/ops/create-codec";
 
 describe("superjsonCreateCodec should succeed", () => {
+  const codec = unwrap(superjsonCreateCodec());
+
   test("at creating an instance of the SuperJSON class", () => {
-    const codec = unwrap(superjsonCreateCodec());
     expect(codec).toBeInstanceOf(SuperJSON);
   });
 });

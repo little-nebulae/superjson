@@ -1,7 +1,7 @@
-import type { SuperJSONResult } from "superjson";
-
 import { z } from "zod";
+
+import type { JSONValue } from "@/types";
 
 export const JSONValueSchema = z
   .json()
-  .transform((value) => value as SuperJSONResult["json"]);
+  .transform((value) => value as JSONValue);

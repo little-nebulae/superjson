@@ -3,6 +3,25 @@ import type { Tagged } from "type-fest";
 
 export type JSONValue = SuperJSONResult["json"];
 
+export type SerializableJSONValue =
+  | symbol
+  | Set<SuperJSONValue>
+  | Map<SuperJSONValue, SuperJSONValue>
+  | undefined
+  | bigint
+  | Date
+  | RegExp;
+
+export interface SuperJSONArray extends Array<SuperJSONValue> {}
+export interface SuperJSONObject {
+  [key: string]: SuperJSONValue;
+}
+export type SuperJSONValue =
+  | JSONValue
+  | SerializableJSONValue
+  | SuperJSONArray
+  | SuperJSONObject;
+
 export type SuperJSONResultOfTagName = "SuperJSONResultOf";
 export type SuperJSONResultOf<T> = Tagged<
   SuperJSONResult,

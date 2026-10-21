@@ -5,6 +5,7 @@ import { describe, expect, test } from "vitest";
 import { superjsonCreateCodec } from "@/ops/create-codec";
 import { superjsonDecode } from "@/ops/decode";
 import { superjsonEncode } from "@/ops/encode";
+import { SuperJSONResultSchema } from "@/schemas/result";
 
 const codec = unwrap(superjsonCreateCodec());
 
@@ -20,6 +21,13 @@ describe("superjsonEncode should succeed", () => {
     const output = unwrap(superjsonEncode({ input: sc2Replay, codec }));
     expect(output.meta).toBeDefined();
     const input = unwrap(superjsonDecode({ output, codec }));
+    expect(input).toStrictEqual(sc2Replay);
+  });
+
+  test("at producing results that can be parsed by SuperJSONResultSchema", () => {
+    const output = unwrap(superjsonEncode({ input: sc2Replay, codec }));
+    const parsedOutput = SuperJSONResultSchema.parse(output);
+    const input = unwrap(superjsonDecode({ output: parsedOutput, codec }));
     expect(input).toStrictEqual(sc2Replay);
   });
 });

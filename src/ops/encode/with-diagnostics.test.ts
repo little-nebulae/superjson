@@ -1,8 +1,9 @@
 import { unwrap } from "@little-nebulae/result";
-import { sc2Match } from "test/fixtures";
+import { sc2Match, sc2Replay } from "test/fixtures";
 import { assert, describe, expect, test } from "vitest";
 
 import { superjsonCreateCodec } from "@/ops/create-codec";
+import { superjsonDecode } from "@/ops/decode";
 import { superjsonEncodeWithDiagnostics } from "@/ops/encode/with-diagnostics";
 
 const codec = unwrap(superjsonCreateCodec());
@@ -16,5 +17,16 @@ describe("superjsonEncodeWithDiagnostics should succeed", () => {
     assert(result.lossy === false);
     expect(result.output.json).toStrictEqual(sc2Match);
     expect(result.output.meta).toBeUndefined();
+  });
+
+  test("at losslessly encoding additional data types that are supported by SuperJSON", () => {
+    const result = unwrap(
+      superjsonEncodeWithDiagnostics({ input: sc2Replay, codec }),
+    );
+    assert(result.lossy === false);
+    const output = result.output;
+    expect(output.meta).toBeDefined();
+    const input = unwrap(superjsonDecode({ output, codec }));
+    expect(input).toStrictEqual(sc2Replay);
   });
 });

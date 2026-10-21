@@ -7,7 +7,7 @@ import type {
   SuperJSONValue,
 } from "@/types";
 
-export function superjsonSerialize<T extends SuperJSONValue>({
+export function superjsonEncode<T extends SuperJSONValue>({
   input,
   codec,
 }: {
@@ -22,7 +22,7 @@ export function superjsonSerialize<T extends SuperJSONValue>({
     catchFn: (error) =>
       new UnexpectedError({
         message: composeErrorMessage({
-          operation: "serialize input with superjson",
+          operation: "encode input with superjson",
         }),
         cause: error,
         meta: null,

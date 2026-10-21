@@ -2,8 +2,8 @@ import { unwrap } from "@little-nebulae/result";
 import { expectTypeOf, test } from "vitest";
 
 import { createSuperJSON } from "@/ops/create";
-import { superjsonDeserialize } from "@/ops/deserialize";
-import { superjsonSerialize } from "@/ops/serialize";
+import { superjsonDeserialize } from "@/ops/decode";
+import { superjsonSerialize } from "@/ops/encode";
 
 test("superjsonDeserialize should recover the original type passed to superjsonSerialize", () => {
   const originalValue = {

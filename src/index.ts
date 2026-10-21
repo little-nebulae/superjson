@@ -3,5 +3,5 @@ export type * from "@/types";
 
 export * from "@/schemas/result";
 
-export * from "@/ops/serialize";
-export * from "@/ops/deserialize";
+export * from "@/ops/encode";
+export * from "@/ops/decode";

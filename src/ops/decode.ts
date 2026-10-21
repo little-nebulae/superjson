@@ -9,7 +9,7 @@ import type {
   SuperJSONResultOfTagName,
 } from "@/types";
 
-export function superjsonDeserialize<T extends SuperJSONResultOf<unknown>>({
+export function superjsonDecode<T extends SuperJSONResultOf<unknown>>({
   output,
   codec,
   inPlace = false,
@@ -28,7 +28,7 @@ export function superjsonDeserialize<T extends SuperJSONResultOf<unknown>>({
     catchFn: (error) =>
       new UnexpectedError({
         message: composeErrorMessage({
-          operation: "deserialize output with superjson",
+          operation: "decode output with superjson",
         }),
         cause: error,
         meta: { inPlace },

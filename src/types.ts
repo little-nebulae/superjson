@@ -34,4 +34,4 @@ export type CustomTransformer<Input, Output extends JSONValue> = Parameters<
   typeof registerCustom<Input, Output>
 >[0];
 
-export type CustomSuperJSON = Tagged<SuperJSON, "CustomSuperJSON">;
+export type SuperJSONCodec = Tagged<SuperJSON, "SuperJSONCodec">;

@@ -25,15 +25,9 @@ export const SuperJSONResultSchema = z.object({
 });
 
 export function DetailedSuperJSONResultSchema<T>() {
-  return z.discriminatedUnion("lossless", [
+  return z.discriminatedUnion("lossy", [
     z.object({
-      lossless: z.literal(true),
-      result: SuperJSONResultSchema.transform(
-        (value) => value as SuperJSONResultOf<T>,
-      ),
-    }),
-    z.object({
-      lossless: z.literal(false),
+      lossy: z.literal(true),
       result: z
         .object({
           ...SuperJSONResultSchema.shape,
@@ -44,6 +38,12 @@ export function DetailedSuperJSONResultSchema<T>() {
         z.object({ format: z.literal("raw"), value: z.array(ZodIssueSchema) }),
         z.object({ format: z.literal("pretty"), value: NonEmptyStringSchema }),
       ]),
+    }),
+    z.object({
+      lossy: z.literal(false),
+      result: SuperJSONResultSchema.transform(
+        (value) => value as SuperJSONResultOf<T>,
+      ),
     }),
   ]);
 }

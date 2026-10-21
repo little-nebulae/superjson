@@ -12,29 +12,6 @@ import type {
   SuperJSONValue,
 } from "@/types";
 
-export function superjsonEncode<T extends SuperJSONValue>({
-  input,
-  codec,
-}: {
-  input: T;
-  codec: SuperJSONCodec;
-}) {
-  return attempt({
-    tryFn: () => {
-      const output = codec.serialize(input);
-      return output as SuperJSONResultOf<T>;
-    },
-    catchFn: (error) =>
-      new UnexpectedError({
-        message: composeErrorMessage({
-          operation: "encode input with superjson",
-        }),
-        cause: error,
-        meta: null,
-      }),
-  });
-}
-
 export function superjsonEncodeWithDiagnostics<T extends SuperJSONValue>({
   input,
   codec,

@@ -98,6 +98,8 @@ export const sc2Replay = {
   ],
 };
 
+export const sc2Error = new Error("Not enough minerals");
+
 class Barracks {
   constructor(
     public readonly unitsQueued: string[],
@@ -110,8 +112,6 @@ class Barracks {
     return this.unitsQueued.shift();
   }
 }
-
-export const sc2Error = new Error("Not enough minerals");
 
 export const sc2Unsupported = {
   // function
@@ -143,7 +143,6 @@ export const sc2Unsupported = {
   // binary types beyond superjson's typed arrays
   rawReplayBuffer: new ArrayBuffer(16),
   replayDataView: new DataView(new ArrayBuffer(8)),
-  bigApmHistory: new BigInt64Array([0n, 310n]),
   // weak collections
   scoutedBases: new WeakSet<object>(),
   unitOwners: new WeakMap<object, string>(),
@@ -157,4 +156,9 @@ export const sc2Unsupported = {
   })(),
   // streams
   replayStream: new ReadableStream(),
+};
+
+export const sc2BigIntTypedArrays = {
+  bigEconomyHistory: new BigInt64Array([0n, 310n]),
+  bigApmHistory: new BigUint64Array([0n, 310n]),
 };

@@ -1,5 +1,5 @@
 import { deserialize, serialize } from "superjson";
-import { sc2Error, sc2Match, sc2Replay } from "test/fixtures";
+import { sc2Error, sc2Match, sc2Replay, sc2Unsupported } from "test/fixtures";
 import { assert, describe, expect, test } from "vitest";
 
 // Success cases
@@ -48,5 +48,24 @@ describe("superjson should succeed", () => {
     expect(value).not.toStrictEqual(fixture);
     expect(Object.hasOwn(value, "name")).toBe(true);
     expect(Object.hasOwn(fixture, "name")).toBe(false);
+  });
+});
+
+// Edge cases
+describe("superjson should", () => {
+  test("succeed at handling data types that are not supported by both it and JSON.stringify but the result will make JSON.stringify throw a TypeError", () => {
+    const fixture = sc2Unsupported;
+
+    const result = serialize(fixture);
+    expect(result).not.toHaveProperty("meta");
+
+    const json = result.json;
+    for (const [key, value] of Object.entries(fixture)) {
+    }
+
+    expect(() => JSON.stringify(result)).not.toThrow();
+
+    const value = deserialize(result);
+    // expect(value).toStrictEqual(fixture);
   });
 });

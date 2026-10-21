@@ -25,7 +25,7 @@ export function superjsonSerialize<T extends SuperJSONValue>({
     catchFn: (error) =>
       new UnexpectedError({
         message: composeErrorMessage({
-          operation: "use superjson to serialize value",
+          operation: "serialize with superjson",
         }),
         cause: error,
         meta: null,

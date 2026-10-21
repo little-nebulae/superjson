@@ -2,7 +2,6 @@ import type { GetTagMetadata } from "type-fest";
 
 import { composeErrorMessage, UnexpectedError } from "@little-nebulae/error";
 import { attempt, unwrap } from "@little-nebulae/result";
-import { deserialize } from "superjson";
 
 import type {
   CustomSuperJSON,
@@ -32,7 +31,7 @@ export function superjsonDeserialize<T extends SuperJSONResultOf<unknown>>({
     catchFn: (error) =>
       new UnexpectedError({
         message: composeErrorMessage({
-          operation: "deserialize value with superjson",
+          operation: "deserialize with superjson",
         }),
         cause: error,
         meta: { inPlace },

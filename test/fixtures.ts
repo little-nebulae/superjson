@@ -100,3 +100,62 @@ export const sc2Replay = {
     },
   ],
 };
+
+class Barracks {
+  constructor(
+    public readonly unitsQueued: string[],
+    public rallyPoint: { x: number; y: number },
+  ) {}
+  get isProducing() {
+    return this.unitsQueued.length > 0;
+  }
+  train() {
+    return this.unitsQueued.shift();
+  }
+}
+
+export const sc2Unsupported = {
+  // function
+  onUnitDied: (unitTag: number) => `Unit ${unitTag} died`,
+  // symbol (unregistered)
+  abilityId: Symbol("Effect_Stim"),
+  // class instance (unregistered)
+  barracks: new Barracks(["Marine", "Marauder"], { x: 32.5, y: 41 }),
+  // Fetch API
+  replayRequest: new Request("https://sc2replaystats.example/api/replays", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ player: "Serral" }),
+  }),
+  replayResponse: new Response(JSON.stringify({ ok: true }), {
+    status: 200,
+    headers: { "x-ladder-region": "EU" },
+  }),
+  matchHeaders: new Headers({ "x-map": "Ever Dream LE" }),
+  // URLSearchParams (note: URL is supported, this is not)
+  queryParams: new URLSearchParams({ player: "Serral", race: "Zerg" }),
+  // FormData, Blob, File
+  replayUpload: (() => {
+    const form = new FormData();
+    form.append("replay", new File(["...binary..."], "ever-dream.SC2Replay"));
+    return form;
+  })(),
+  replayBlob: new Blob(["GG"], { type: "text/plain" }),
+  // binary types beyond superjson's typed arrays
+  rawReplayBuffer: new ArrayBuffer(16),
+  replayDataView: new DataView(new ArrayBuffer(8)),
+  bigApmHistory: new BigInt64Array([0n, 310n]),
+  // weak collections
+  scoutedBases: new WeakSet<object>(),
+  unitOwners: new WeakMap<object, string>(),
+  weakTarget: new WeakRef({ tag: 1 }),
+  // async / control
+  pendingReplay: Promise.resolve("replay-bytes"),
+  abortController: new AbortController(),
+  buildOrderIterator: (function* () {
+    yield "Pool";
+    yield "Hatchery";
+  })(),
+  // streams
+  replayStream: new ReadableStream(),
+};

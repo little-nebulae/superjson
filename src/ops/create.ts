@@ -6,7 +6,7 @@ import type { CustomSuperJSON } from "@/types";
 
 import { ERROR_TRANSFORMER_NAME, errorTransformer } from "@/transformers/error";
 
-export function createCustomSuperJSON() {
+export function createSuperJSON() {
   return attempt({
     tryFn: () => {
       const instance = new SuperJSON();

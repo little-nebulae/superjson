@@ -3,7 +3,7 @@ import { deserialize } from "superjson";
 import { sc2Match, sc2Replay } from "test/fixtures";
 import { describe, expect, test } from "vitest";
 
-import { superjsonCreateCodec } from "@/ops/create";
+import { superjsonCreateCodec } from "@/ops/create-codec";
 import { superjsonEncode } from "@/ops/encode";
 
 const codec = unwrap(superjsonCreateCodec());

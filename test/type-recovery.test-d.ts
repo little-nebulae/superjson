@@ -1,7 +1,7 @@
 import { unwrap } from "@little-nebulae/result";
 import { expectTypeOf, test } from "vitest";
 
-import { superjsonCreateCodec } from "@/ops/create";
+import { superjsonCreateCodec } from "@/ops/create-codec";
 import { superjsonDecode } from "@/ops/decode";
 import { superjsonEncode } from "@/ops/encode";
 

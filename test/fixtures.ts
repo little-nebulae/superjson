@@ -77,6 +77,8 @@ export const sc2Replay = {
     ["Serral", 198],
     ["Maru", 200],
   ]),
+  // Error (serializes to {}; message and stack are non-enumerable)
+  crashReason: new Error("Not enough minerals"),
   // URL (serializes to its href string via toJSON)
   replayDownloadUrl: new URL(
     "https://sc2replaystats.example/replay/9007199254740993?player=Serral",
@@ -94,6 +96,7 @@ export const sc2Replay = {
         [60, 310n],
       ]),
       joinedAt: new Date("2026-10-21T14:29:12.345Z"),
+      supplyBlockedErrors: [new Error("Spawn more Overlords.")],
     },
   ],
 };

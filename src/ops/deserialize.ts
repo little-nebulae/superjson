@@ -1,25 +1,38 @@
 import type { GetTagMetadata } from "type-fest";
 
 import { composeErrorMessage, UnexpectedError } from "@little-nebulae/error";
-import { attempt } from "@little-nebulae/result";
+import { attempt, unwrap } from "@little-nebulae/result";
 import { deserialize } from "superjson";
 
-import type { SuperJSONResultOf, SuperJSONResultOfTagName } from "@/types";
+import type {
+  CustomSuperJSON,
+  SuperJSONResultOf,
+  SuperJSONResultOfTagName,
+} from "@/types";
 
-export function superjsonDeserialize<T extends SuperJSONResultOf<unknown>>(
-  value: T,
-  inPlace: boolean = false,
-) {
+import { createSuperJSON } from "@/ops/create";
+
+export function superjsonDeserialize<T extends SuperJSONResultOf<unknown>>({
+  result,
+  superjson,
+  inPlace = false,
+}: {
+  result: T;
+  superjson?: CustomSuperJSON;
+  inPlace?: boolean;
+}) {
   return attempt({
-    tryFn: () =>
-      deserialize(value, { inPlace }) as GetTagMetadata<
-        T,
-        SuperJSONResultOfTagName
-      >,
+    tryFn: () => {
+      const instance = superjson ?? unwrap(createSuperJSON());
+      const value = instance.deserialize<
+        GetTagMetadata<T, SuperJSONResultOfTagName>
+      >(result, { inPlace });
+      return value;
+    },
     catchFn: (error) =>
       new UnexpectedError({
         message: composeErrorMessage({
-          operation: "deserialize value",
+          operation: "deserialize value with superjson",
         }),
         cause: error,
         meta: { inPlace },

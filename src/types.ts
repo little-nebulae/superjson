@@ -1,4 +1,4 @@
-import type { SuperJSONResult } from "superjson";
+import type { SuperJSONResult, registerCustom } from "superjson";
 import type { Tagged } from "type-fest";
 
 export type JSONValue = SuperJSONResult["json"];
@@ -28,3 +28,7 @@ export type SuperJSONResultOf<T> = Tagged<
   SuperJSONResultOfTagName,
   T
 >;
+
+export type CustomTransformer<Input, Output extends JSONValue> = Parameters<
+  typeof registerCustom<Input, Output>
+>[0];

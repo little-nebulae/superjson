@@ -1,20 +1,18 @@
 import { unwrap } from "@little-nebulae/result";
 import { expectTypeOf, test } from "vitest";
 
-import { createSuperJSON } from "@/ops/create";
-import { superjsonDeserialize } from "@/ops/decode";
-import { superjsonSerialize } from "@/ops/encode";
+import { createSuperJSONCodec } from "@/ops/create";
+import { superjsonDecode } from "@/ops/decode";
+import { superjsonEncode } from "@/ops/encode";
 
-test("superjsonDeserialize should recover the original type passed to superjsonSerialize", () => {
-  const originalValue = {
+test("superjsonDecode should recover the original type passed to superjsonEncode", () => {
+  const input = {
     normal: "string",
     timestamp: new Date(),
     test: /superjson/,
   };
-  const superjson = unwrap(createSuperJSON());
-  const result = unwrap(
-    superjsonSerialize({ value: originalValue, superjson }),
-  );
-  const deserializedValue = unwrap(superjsonDeserialize({ result, superjson }));
-  expectTypeOf(deserializedValue).toEqualTypeOf(originalValue);
+  const codec = unwrap(createSuperJSONCodec());
+  const output = unwrap(superjsonEncode({ input, codec }));
+  const decodedInput = unwrap(superjsonDecode({ output, codec }));
+  expectTypeOf(decodedInput).toEqualTypeOf(input);
 });

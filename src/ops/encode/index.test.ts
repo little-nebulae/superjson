@@ -3,10 +3,10 @@ import { deserialize } from "superjson";
 import { sc2Match, sc2Replay } from "test/fixtures";
 import { describe, expect, test } from "vitest";
 
-import { createSuperJSONCodec } from "@/ops/create";
+import { superjsonCreateCodec } from "@/ops/create";
 import { superjsonEncode } from "@/ops/encode";
 
-const codec = unwrap(createSuperJSONCodec());
+const codec = unwrap(superjsonCreateCodec());
 
 // Success cases
 describe("superjsonEncode should succeed", () => {

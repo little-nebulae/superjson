@@ -1,7 +1,7 @@
 import { unwrap } from "@little-nebulae/result";
 import { expectTypeOf, test } from "vitest";
 
-import { createSuperJSONCodec } from "@/ops/create";
+import { superjsonCreateCodec } from "@/ops/create";
 import { superjsonDecode } from "@/ops/decode";
 import { superjsonEncode } from "@/ops/encode";
 
@@ -11,7 +11,7 @@ test("superjsonDecode should recover the original type passed to superjsonEncode
     timestamp: new Date(),
     test: /superjson/,
   };
-  const codec = unwrap(createSuperJSONCodec());
+  const codec = unwrap(superjsonCreateCodec());
   const output = unwrap(superjsonEncode({ input, codec }));
   const decodedInput = unwrap(superjsonDecode({ output, codec }));
   expectTypeOf(decodedInput).toEqualTypeOf(input);

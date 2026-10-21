@@ -6,7 +6,7 @@ import type { SuperJSONCodec } from "@/types";
 
 import { ERROR_TRANSFORMER_NAME, errorTransformer } from "@/transformers/error";
 
-export function createSuperJSONCodec() {
+export function superjsonCreateCodec() {
   return attempt({
     tryFn: () => {
       const codec = new SuperJSON();

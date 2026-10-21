@@ -2,6 +2,8 @@ import { unwrap } from "@little-nebulae/result";
 import { sc2Match, sc2Replay } from "test/fixtures";
 import { describe, expect, test } from "vitest";
 
+import type { SuperJSONResultOf } from "@/types";
+
 import { superjsonCreateCodec } from "@/ops/create-codec";
 import { superjsonDecode } from "@/ops/decode";
 import { superjsonEncode } from "@/ops/encode";
@@ -26,7 +28,9 @@ describe("superjsonEncode should succeed", () => {
 
   test("at producing results that can be parsed by SuperJSONResultSchema", () => {
     const output = unwrap(superjsonEncode({ input: sc2Replay, codec }));
-    const parsedOutput = SuperJSONResultSchema.parse(output);
+    const parsedOutput = SuperJSONResultSchema.transform(
+      (value) => value as SuperJSONResultOf<typeof sc2Replay>,
+    ).parse(output);
     const input = unwrap(superjsonDecode({ output: parsedOutput, codec }));
     expect(input).toStrictEqual(sc2Replay);
   });

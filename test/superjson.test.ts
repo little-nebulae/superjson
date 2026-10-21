@@ -28,7 +28,7 @@ describe("superjson should succeed", () => {
     expect(value).toStrictEqual(fixture);
   });
 
-  test("at handling instance of Error but the result will be lossy", () => {
+  test("at handling instance of Error and the result will be supported by JSON.stringify but it will be lossy", () => {
     const fixture = sc2Error;
 
     const result = serialize(fixture);

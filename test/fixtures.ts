@@ -100,6 +100,12 @@ export const sc2Replay = {
 
 export const sc2Error = new Error("Not enough minerals");
 
+export const sc2NestedError = new Error("I can't build here.", {
+  cause: new Error("There's something in the way.", {
+    cause: "burrowed Zergling",
+  }),
+});
+
 class Barracks {
   constructor(
     public readonly unitsQueued: string[],

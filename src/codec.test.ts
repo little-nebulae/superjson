@@ -1,5 +1,10 @@
 import { unwrap } from "@little-nebulae/result";
-import { sc2Match, sc2NestedError, sc2Replay } from "test/fixtures";
+import {
+  sc2BigIntTypedArrays,
+  sc2Match,
+  sc2NestedError,
+  sc2Replay,
+} from "test/fixtures";
 import { describe, expect, test } from "vitest";
 
 import { SuperJSONCodec } from "@/codec";
@@ -40,6 +45,18 @@ describe("SuperJSONCodec's encode-decode methods should", () => {
 
     test("at handling nested error", () => {
       const fixture = sc2NestedError;
+
+      const output = unwrap(codec.encode({ input: fixture }));
+      expect(output.meta).toBeDefined();
+
+      expect(() => JSON.stringify(output)).not.toThrow();
+
+      const input = unwrap(codec.decode({ output }));
+      expect(input).toStrictEqual(fixture);
+    });
+
+    test("at handling bigint typed arrays", () => {
+      const fixture = sc2BigIntTypedArrays;
 
       const output = unwrap(codec.encode({ input: fixture }));
       expect(output.meta).toBeDefined();

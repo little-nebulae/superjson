@@ -23,21 +23,21 @@ export const SuperJSONResultSchema = z.object({
 });
 
 export function DetailedSuperJSONResultSchema<T>() {
-  return z.discriminatedUnion("lossy", [
+  return z.discriminatedUnion("jsonSafe", [
     z.object({
-      lossy: z.literal(false),
+      jsonSafe: z.literal(true),
       output: SuperJSONResultSchema.transform(
         (value) => value as SuperJSONResultOf<T>,
       ),
     }),
     z.object({
-      lossy: z.literal(true),
+      jsonSafe: z.literal(false),
       output: z
         .object({
           ...SuperJSONResultSchema.shape,
           json: z.unknown(),
         })
-        .transform((value) => value as SuperJSONResultOf<unknown>),
+        .transform((value) => value as SuperJSONResultOf<T>),
       issues: z.discriminatedUnion("format", [
         z.object({
           format: z.literal("raw"),

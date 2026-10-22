@@ -34,11 +34,12 @@ export function DetailedSuperJSONResultSchema<T>() {
     }),
     z.object({
       lossy: z.literal(true),
-      output: z.object({
-        ...SuperJSONResultSchema.shape,
-        // Intentionally no validation + type casting so deserialize can still accept it
-        json: z.custom<SuperJSONResult["json"]>(),
-      }),
+      output: z
+        .object({
+          ...SuperJSONResultSchema.shape,
+          json: z.unknown(),
+        })
+        .transform((value) => value as SuperJSONResultOf<unknown>),
       issues: z.discriminatedUnion("format", [
         z.object({
           format: z.literal("raw"),

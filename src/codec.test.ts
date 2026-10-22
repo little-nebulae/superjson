@@ -118,5 +118,20 @@ describe("SuperJSONCodec's encodeUnknown method should", () => {
       const input = unwrap(codec.decode({ output }));
       expect(input).toStrictEqual(fixture);
     });
+
+    test("handling bigint typed arrays", () => {
+      const fixture = sc2BigIntTypedArrays;
+
+      const detailedResult = unwrap(codec.encodeUnknown({ input: fixture }));
+      assert(detailedResult.jsonSafe);
+
+      const output = detailedResult.output;
+      expect(output.meta).toBeDefined();
+
+      expect(() => JSON.stringify(output)).not.toThrow();
+
+      const input = unwrap(codec.decode({ output }));
+      expect(input).toStrictEqual(fixture);
+    });
   });
 });

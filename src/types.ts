@@ -4,7 +4,6 @@ import type { Tagged } from "type-fest";
 export type JSONValue = SuperJSONResult["json"];
 
 export type SerializableJSONValue =
-  | symbol
   | Set<SuperJSONValue>
   | Map<SuperJSONValue, SuperJSONValue>
   | undefined

@@ -18,7 +18,7 @@ import {
 import { ERROR_TRANSFORMER_NAME, errorTransformer } from "@/transformers/error";
 
 export class SuperJSONCodec {
-  superjson: CustomSuperJSON;
+  readonly #superjson: CustomSuperJSON;
 
   constructor() {
     const superjson = new SuperJSON();
@@ -31,15 +31,18 @@ export class SuperJSONCodec {
       bigUint64ArrayTransformer,
       BIG_UINT_64_ARRAY_TRANSFORMER_NAME,
     );
-    this.superjson = superjson as CustomSuperJSON;
+    this.#superjson = superjson as CustomSuperJSON;
   }
 
   encode<T extends SuperJSONValue>({ input }: { input: T }) {
-    return superjsonEncode({ input, superjson: this.superjson });
+    return superjsonEncode({ input, superjson: this.#superjson });
   }
 
   encodeWithDiagnostics<T extends SuperJSONValue>({ input }: { input: T }) {
-    return superjsonEncodeWithDiagnostics({ input, superjson: this.superjson });
+    return superjsonEncodeWithDiagnostics({
+      input,
+      superjson: this.#superjson,
+    });
   }
 
   decode<T extends SuperJSONResultOf<unknown>>({
@@ -49,6 +52,6 @@ export class SuperJSONCodec {
     output: T;
     inPlace?: boolean;
   }) {
-    return superjsonDecode({ output, inPlace, superjson: this.superjson });
+    return superjsonDecode({ output, inPlace, superjson: this.#superjson });
   }
 }

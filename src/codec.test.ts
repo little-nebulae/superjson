@@ -1,5 +1,5 @@
 import { unwrap } from "@little-nebulae/result";
-import { sc2Match } from "test/fixtures";
+import { sc2Match, sc2Replay } from "test/fixtures";
 import { describe, expect, test } from "vitest";
 
 import { SuperJSONCodec } from "@/codec";
@@ -19,6 +19,18 @@ describe("SuperJSONCodec's encode-decode methods should", () => {
 
       const output = unwrap(codec.encode({ input: fixture }));
       expect(output).toStrictEqual({ json: fixture });
+
+      expect(() => JSON.stringify(output)).not.toThrow();
+
+      const input = unwrap(codec.decode({ output }));
+      expect(input).toStrictEqual(fixture);
+    });
+
+    test("at handling additional data types that are not supported by JSON.stringify but supported by superjson (this test doesn't cover error)", () => {
+      const fixture = sc2Replay;
+
+      const output = unwrap(codec.encode({ input: fixture }));
+      expect(output.meta).toBeDefined();
 
       expect(() => JSON.stringify(output)).not.toThrow();
 

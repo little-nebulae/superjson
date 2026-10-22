@@ -49,11 +49,8 @@ describe("superjson should succeed", () => {
     expect(Object.hasOwn(value, "name")).toBe(true);
     expect(Object.hasOwn(fixture, "name")).toBe(false);
   });
-});
 
-// Edge cases
-describe("superjson should", () => {
-  test("succeed at handling data types that are not supported by both it and JSON.stringify but the result will make JSON.stringify throw a TypeError", () => {
+  test("at handling data types that are not supported by both it and JSON.stringify", () => {
     const fixture = sc2Unsupported;
 
     const result = serialize(fixture);

@@ -22,7 +22,7 @@ describe("superjsonEncode and superjsonDecode should succeed", () => {
     expect(input).toStrictEqual(fixture);
   });
 
-  test("at handling additional data types that are not supported by JSON.stringify but supported by it (this test doesn't cover error)", () => {
+  test("at handling additional data types that are not supported by JSON.stringify but supported by them (this test doesn't cover error)", () => {
     const fixture = sc2Replay;
 
     const output = unwrap(superjsonEncode({ input: fixture, superjson }));

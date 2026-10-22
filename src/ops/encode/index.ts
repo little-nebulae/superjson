@@ -1,22 +1,20 @@
+import type { SuperJSON } from "superjson";
+
 import { composeErrorMessage, UnexpectedError } from "@little-nebulae/error";
 import { attempt } from "@little-nebulae/result";
 
-import type {
-  SuperJSONCodec,
-  SuperJSONResultOf,
-  SuperJSONValue,
-} from "@/types";
+import type { SuperJSONResultOf, SuperJSONValue } from "@/types";
 
 export function superjsonEncode<T extends SuperJSONValue>({
   input,
-  codec,
+  superjson,
 }: {
   input: T;
-  codec: SuperJSONCodec;
+  superjson: SuperJSON;
 }) {
   return attempt({
     tryFn: () => {
-      const output = codec.serialize(input);
+      const output = superjson.serialize(input);
       return output as SuperJSONResultOf<T>;
     },
     catchFn: (error) =>

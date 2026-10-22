@@ -1,27 +1,24 @@
 import type { Result } from "@little-nebulae/result";
 import type { ZodIssue } from "@little-nebulae/zod-schemas";
+import type { SuperJSON } from "superjson";
 
 import { composeErrorMessage, UnexpectedError } from "@little-nebulae/error";
 import { attempt } from "@little-nebulae/result";
 import { z } from "zod";
 
 import type { DetailedSuperJSONResult } from "@/schemas/result";
-import type {
-  SuperJSONCodec,
-  SuperJSONResultOf,
-  SuperJSONValue,
-} from "@/types";
+import type { SuperJSONResultOf, SuperJSONValue } from "@/types";
 
 export function superjsonEncodeWithDiagnostics<T extends SuperJSONValue>({
   input,
-  codec,
+  superjson,
 }: {
   input: T;
-  codec: SuperJSONCodec;
+  superjson: SuperJSON;
 }): Result<DetailedSuperJSONResult<T>, UnexpectedError> {
   return attempt({
     tryFn: () => {
-      const output = codec.serialize(input);
+      const output = superjson.serialize(input);
       const parseJsonResult = z
         .json()
         .safeParse(output, { reportInput: false });

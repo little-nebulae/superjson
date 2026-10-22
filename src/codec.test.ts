@@ -4,6 +4,7 @@ import {
   sc2Match,
   sc2NestedError,
   sc2Replay,
+  sc2Unsupported,
 } from "test/fixtures";
 import { assert, describe, expect, test } from "vitest";
 
@@ -132,6 +133,37 @@ describe("SuperJSONCodec's encodeUnknown method should", () => {
 
       const input = unwrap(codec.decode({ output }));
       expect(input).toStrictEqual(fixture);
+    });
+  });
+
+  // Non-JSON-safe cases
+  describe("return a non-json-safe result when", () => {
+    test("handling unsupported data types", () => {
+      const fixture = sc2Unsupported;
+
+      const detailedResult = unwrap(codec.encodeUnknown({ input: fixture }));
+      assert(detailedResult.jsonSafe === false);
+
+      const { output, issues } = detailedResult;
+
+      // Testing output
+      expect(output).toStrictEqual({ json: fixture });
+
+      expect(() => JSON.stringify(output)).not.toThrow();
+
+      const input = unwrap(codec.decode({ output }));
+      expect(input).toStrictEqual(fixture);
+
+      // Testing issues
+      expect(() => JSON.stringify(issues)).not.toThrow();
+
+      assert(issues.format === "raw");
+      expect(issues.value).toHaveLength(1);
+
+      const [issue] = issues.value;
+      assert(issue);
+      assert(issue.code === "invalid_union");
+      expect(issue.errors).toHaveLength(6);
     });
   });
 });

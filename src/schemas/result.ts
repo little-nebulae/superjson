@@ -1,5 +1,3 @@
-import type { SuperJSONResult } from "superjson";
-
 import {
   NonEmptyStringSchema,
   ZodIssueSchema,

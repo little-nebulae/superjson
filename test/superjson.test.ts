@@ -57,15 +57,11 @@ describe("superjson should", () => {
     const fixture = sc2Unsupported;
 
     const result = serialize(fixture);
-    expect(result).not.toHaveProperty("meta");
-
-    const json = result.json;
-    for (const [key, value] of Object.entries(fixture)) {
-    }
+    expect(result).toStrictEqual({ json: fixture });
 
     expect(() => JSON.stringify(result)).not.toThrow();
 
     const value = deserialize(result);
-    // expect(value).toStrictEqual(fixture);
+    expect(value).toStrictEqual(fixture);
   });
 });

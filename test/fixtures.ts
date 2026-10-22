@@ -150,10 +150,6 @@ export const sc2Unsupported = {
   // async / control
   pendingReplay: Promise.resolve("replay-bytes"),
   abortController: new AbortController(),
-  buildOrderIterator: (function* () {
-    yield "Pool";
-    yield "Hatchery";
-  })(),
   // streams
   replayStream: new ReadableStream(),
 };

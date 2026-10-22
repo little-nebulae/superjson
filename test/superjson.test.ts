@@ -1,5 +1,11 @@
 import { deserialize, serialize } from "superjson";
-import { sc2Error, sc2Match, sc2Replay, sc2Unsupported } from "test/fixtures";
+import {
+  sc2BigIntTypedArrays,
+  sc2Error,
+  sc2Match,
+  sc2Replay,
+  sc2Unsupported,
+} from "test/fixtures";
 import { assert, describe, expect, test } from "vitest";
 
 // Success cases
@@ -60,5 +66,23 @@ describe("superjson should succeed", () => {
 
     const value = deserialize(result);
     expect(value).toStrictEqual(fixture);
+  });
+});
+
+// Edge cases
+describe("superjson should", () => {
+  test("succeed at handling bigint typed arrays but the result will make JSON.stringify throw a TypeError and deserialize throw an Error", () => {
+    const fixture = sc2BigIntTypedArrays;
+
+    const result = serialize(fixture);
+    expect(result.meta).toBeDefined();
+
+    expect(() => JSON.stringify(result)).toThrow(
+      new TypeError("Do not know how to serialize a BigInt"),
+    );
+
+    expect(() => deserialize(result)).toThrow(
+      new Error("Trying to deserialize unknown typed array"),
+    );
   });
 });

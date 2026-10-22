@@ -7,9 +7,9 @@ import { attempt } from "@little-nebulae/result";
 import { z } from "zod";
 
 import type { DetailedSuperJSONResult } from "@/schemas/result";
-import type { SuperJSONResultOf, SuperJSONValue } from "@/types";
+import type { SuperJSONResultOf } from "@/types";
 
-export function superjsonEncodeWithDiagnostics<T extends SuperJSONValue>({
+export function superjsonEncodeUnknown<T>({
   input,
   superjson,
 }: {
@@ -18,32 +18,32 @@ export function superjsonEncodeWithDiagnostics<T extends SuperJSONValue>({
 }): Result<DetailedSuperJSONResult<T>, UnexpectedError> {
   return attempt({
     tryFn: () => {
-      const output = superjson.serialize(input);
+      const output = superjson.serialize(input) as SuperJSONResultOf<T>;
       const parseJsonResult = z
         .json()
         .safeParse(output, { reportInput: false });
       if (parseJsonResult.success) {
-        return { lossy: false, output: output as SuperJSONResultOf<T> };
+        return { jsonSafe: true, output };
       }
       const error = parseJsonResult.error;
       const issues = error.issues;
       if (z.json().validate(issues)) {
         return {
-          lossy: true,
-          output: output as SuperJSONResultOf<unknown>,
+          jsonSafe: false,
+          output,
           issues: { format: "raw", value: issues as ZodIssue[] },
         };
       }
       return {
-        lossy: true,
-        output: output as SuperJSONResultOf<unknown>,
+        jsonSafe: false,
+        output,
         issues: { format: "pretty", value: z.prettifyError(error) },
       };
     },
     catchFn: (error) =>
       new UnexpectedError({
         message: composeErrorMessage({
-          operation: "use superjson to encode input with diagnostics",
+          operation: "encode unknown input with superjson",
         }),
         cause: error,
         meta: null,

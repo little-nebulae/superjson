@@ -8,7 +8,7 @@ import type {
 
 import { superjsonDecode } from "@/ops/decode";
 import { superjsonEncode } from "@/ops/encode";
-import { superjsonEncodeWithDiagnostics } from "@/ops/encode/with-diagnostics";
+import { superjsonEncodeUnknown } from "@/ops/encode/unknown";
 import {
   BIG_INT_64_ARRAY_TRANSFORMER_NAME,
   BIG_UINT_64_ARRAY_TRANSFORMER_NAME,
@@ -38,8 +38,8 @@ export class SuperJSONCodec {
     return superjsonEncode({ input, superjson: this.#superjson });
   }
 
-  encodeWithDiagnostics<T extends SuperJSONValue>({ input }: { input: T }) {
-    return superjsonEncodeWithDiagnostics({
+  encodeUnknown<T>({ input }: { input: T }) {
+    return superjsonEncodeUnknown({
       input,
       superjson: this.#superjson,
     });

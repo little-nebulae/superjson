@@ -72,9 +72,9 @@ describe("SuperJSONCodec's encode-decode methods should", () => {
 
 // encodeUnknown method
 describe("SuperJSONCodec's encodeUnknown method should", () => {
-  // Success cases
-  describe("succeed", () => {
-    test("at handling data types supported by JSON.stringify and return a json-safe result", () => {
+  // JSON-safe cases
+  describe("return a json-safe result when", () => {
+    test("handling data types supported by JSON.stringify", () => {
       const fixture = sc2Match;
 
       const detailedResult = unwrap(codec.encodeUnknown({ input: fixture }));
@@ -82,6 +82,21 @@ describe("SuperJSONCodec's encodeUnknown method should", () => {
 
       const output = detailedResult.output;
       expect(output).toStrictEqual({ json: fixture });
+
+      expect(() => JSON.stringify(output)).not.toThrow();
+
+      const input = unwrap(codec.decode({ output }));
+      expect(input).toStrictEqual(fixture);
+    });
+
+    test("handling additional data types that are not supported by JSON.stringify but supported by superjson (this test doesn't cover error)", () => {
+      const fixture = sc2Replay;
+
+      const detailedResult = unwrap(codec.encodeUnknown({ input: fixture }));
+      assert(detailedResult.jsonSafe);
+
+      const output = detailedResult.output;
+      expect(output.meta).toBeDefined();
 
       expect(() => JSON.stringify(output)).not.toThrow();
 

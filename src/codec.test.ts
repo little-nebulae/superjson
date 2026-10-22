@@ -5,7 +5,7 @@ import {
   sc2NestedError,
   sc2Replay,
 } from "test/fixtures";
-import { describe, expect, test } from "vitest";
+import { assert, describe, expect, test } from "vitest";
 
 import { SuperJSONCodec } from "@/codec";
 
@@ -14,9 +14,10 @@ test("SuperJSONCodec's constructor should not throw any exception", () => {
   expect(() => new SuperJSONCodec()).not.toThrow();
 });
 
+const codec = new SuperJSONCodec();
+
 // encode-decode methods
 describe("SuperJSONCodec's encode-decode methods should", () => {
-  const codec = new SuperJSONCodec();
   // Success cases
   describe("succeed", () => {
     test("at handling data types supported by JSON.stringify", () => {
@@ -60,6 +61,27 @@ describe("SuperJSONCodec's encode-decode methods should", () => {
 
       const output = unwrap(codec.encode({ input: fixture }));
       expect(output.meta).toBeDefined();
+
+      expect(() => JSON.stringify(output)).not.toThrow();
+
+      const input = unwrap(codec.decode({ output }));
+      expect(input).toStrictEqual(fixture);
+    });
+  });
+});
+
+// encodeUnknown method
+describe("SuperJSONCodec's encodeUnknown method should", () => {
+  // Success cases
+  describe("succeed", () => {
+    test("at handling data types supported by JSON.stringify and return a json-safe result", () => {
+      const fixture = sc2Match;
+
+      const detailedResult = unwrap(codec.encodeUnknown({ input: fixture }));
+      assert(detailedResult.jsonSafe);
+
+      const output = detailedResult.output;
+      expect(output).toStrictEqual({ json: fixture });
 
       expect(() => JSON.stringify(output)).not.toThrow();
 

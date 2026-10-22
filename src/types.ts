@@ -1,5 +1,4 @@
-import type SuperJSON from "superjson";
-import type { SuperJSONResult, registerCustom } from "superjson";
+import type { SuperJSON, SuperJSONResult, registerCustom } from "superjson";
 import type { Tagged } from "type-fest";
 
 export type JSONValue = SuperJSONResult["json"];

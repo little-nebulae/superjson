@@ -1,5 +1,5 @@
 import { unwrap } from "@little-nebulae/result";
-import SuperJSON from "superjson";
+import { SuperJSON } from "superjson";
 import { expectTypeOf, test } from "vitest";
 
 import { superjsonDecode } from "@/ops/decode";

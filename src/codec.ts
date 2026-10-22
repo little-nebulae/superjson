@@ -1,4 +1,4 @@
-import SuperJSON from "superjson";
+import { SuperJSON } from "superjson";
 
 import type {
   CustomSuperJSON,

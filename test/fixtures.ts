@@ -1,5 +1,7 @@
 import type { JSONType } from "zod";
 
+import { UnexpectedError } from "@little-nebulae/error";
+
 export const sc2Match = {
   // string
   mapName: "Ever Dream LE",
@@ -104,6 +106,14 @@ export const sc2NestedError = new Error("I can't build here.", {
   cause: new Error("There's something in the way.", {
     cause: "burrowed Zergling",
   }),
+});
+
+export const sc2NestedCustomError = new UnexpectedError({
+  message: "I can't build here.",
+  cause: new Error("There's something in the way.", {
+    cause: "burrowed Zergling",
+  }),
+  meta: { building: "Terran Command Center" },
 });
 
 class Barracks {

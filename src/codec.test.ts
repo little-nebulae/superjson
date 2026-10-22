@@ -1,7 +1,9 @@
+import { UNEXPECTED_ERROR_CODE, UnexpectedError } from "@little-nebulae/error";
 import { unwrap } from "@little-nebulae/result";
 import {
   sc2BigIntTypedArrays,
   sc2Match,
+  sc2NestedCustomError,
   sc2NestedError,
   sc2Replay,
   sc2Unsupported,
@@ -67,6 +69,52 @@ describe("SuperJSONCodec's encode-decode methods should", () => {
 
       const input = unwrap(codec.decode({ output }));
       expect(input).toStrictEqual(fixture);
+    });
+  });
+
+  // Edge case
+  test("succeed at handling nested custom error but the result will be lossy", () => {
+    const fixture = sc2NestedCustomError;
+
+    const output = unwrap(codec.encode({ input: fixture }));
+    expect(output.meta).toBeDefined();
+
+    expect(() => JSON.stringify(output)).not.toThrow();
+
+    const input = unwrap(codec.decode({ output }));
+    // Expect input to not be an instance of UnexpectedError like the fixture
+    expect(input).not.toBeInstanceOf(UnexpectedError);
+    expect(fixture).toBeInstanceOf(UnexpectedError);
+    // but input is still an instance of Error
+    expect(input).toBeInstanceOf(Error);
+    // and it can still be identified by code
+    expect(input.code).toBe(UNEXPECTED_ERROR_CODE);
+
+    // Expect input to not strictly equal to fixture
+    expect(input).not.toStrictEqual(fixture);
+    // because input's name isn't enumerable but fixture's is
+    const mismatchedProperty = "name";
+    expect(
+      Object.getOwnPropertyDescriptor(input, mismatchedProperty)?.enumerable,
+    ).toBe(false);
+    expect(
+      Object.getOwnPropertyDescriptor(fixture, mismatchedProperty)?.enumerable,
+    ).toBe(true);
+
+    expect({
+      name: input.name,
+      message: input.message,
+      cause: input.cause,
+      stack: input.stack,
+      code: input.code,
+      meta: input.meta,
+    }).toStrictEqual({
+      name: fixture.name,
+      message: fixture.message,
+      cause: fixture.cause,
+      stack: fixture.stack,
+      code: fixture.code,
+      meta: fixture.meta,
     });
   });
 });

@@ -30,13 +30,13 @@ export function superjsonEncodeWithDiagnostics<T extends SuperJSONValue>({
       if (z.json().validate(issues)) {
         return {
           lossy: true,
-          output,
+          output: output as SuperJSONResultOf<unknown>,
           issues: { format: "raw", value: issues as ZodIssue[] },
         };
       }
       return {
         lossy: true,
-        output,
+        output: output as SuperJSONResultOf<unknown>,
         issues: { format: "pretty", value: z.prettifyError(error) },
       };
     },

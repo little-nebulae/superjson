@@ -103,5 +103,20 @@ describe("SuperJSONCodec's encodeUnknown method should", () => {
       const input = unwrap(codec.decode({ output }));
       expect(input).toStrictEqual(fixture);
     });
+
+    test("handling nested error", () => {
+      const fixture = sc2NestedError;
+
+      const detailedResult = unwrap(codec.encodeUnknown({ input: fixture }));
+      assert(detailedResult.jsonSafe);
+
+      const output = detailedResult.output;
+      expect(output.meta).toBeDefined();
+
+      expect(() => JSON.stringify(output)).not.toThrow();
+
+      const input = unwrap(codec.decode({ output }));
+      expect(input).toStrictEqual(fixture);
+    });
   });
 });

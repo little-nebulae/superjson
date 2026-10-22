@@ -1,5 +1,5 @@
 import type { SuperJSON, SuperJSONResult, registerCustom } from "superjson";
-import type { Tagged } from "type-fest";
+import type { Tagged, TypedArray } from "type-fest";
 
 export type JSONValue = SuperJSONResult["json"];
 
@@ -11,7 +11,8 @@ export type SerializableJSONValue =
   | Date
   | RegExp
   | URL
-  | Error;
+  | Error
+  | TypedArray;
 
 export interface SuperJSONArray extends Array<SuperJSONValue> {}
 export interface SuperJSONObject {

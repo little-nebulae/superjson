@@ -1,6 +1,11 @@
 import { unwrap } from "@little-nebulae/result";
 import { SuperJSON } from "superjson";
-import { sc2Error, sc2Match, sc2Replay } from "test/fixtures";
+import {
+  sc2BigIntTypedArrays,
+  sc2Error,
+  sc2Match,
+  sc2Replay,
+} from "test/fixtures";
 import { assert, describe, expect, test } from "vitest";
 
 import { superjsonDecode } from "@/ops/decode";
@@ -56,4 +61,22 @@ describe("superjsonEncode and superjsonDecode should succeed", () => {
     expect(Object.hasOwn(input, "name")).toBe(true);
     expect(Object.hasOwn(fixture, "name")).toBe(false);
   });
+});
+
+// Edge cases
+test("superjsonEncode should succeed at handling bigint typed arrays but the result will make JSON.stringify throw a TypeError and cause superjsonDecode to fail", () => {
+  const fixture = sc2BigIntTypedArrays;
+
+  const output = unwrap(superjsonEncode({ input: fixture, superjson }));
+  expect(output.meta).toBeDefined();
+
+  expect(() => JSON.stringify(output)).toThrow(
+    new TypeError("Do not know how to serialize a BigInt"),
+  );
+
+  const decodeResult = superjsonDecode({ output, superjson });
+  assert(decodeResult.success === false);
+  expect(decodeResult.error.cause).toStrictEqual(
+    new Error("Trying to deserialize unknown typed array"),
+  );
 });

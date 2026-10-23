@@ -11,6 +11,7 @@ import {
 import { assert, describe, expect, test } from "vitest";
 
 import { SuperJSONCodec } from "@/codec";
+import { DetailedSuperJSONResultSchema } from "@/schemas/result";
 
 // Constructor
 test("SuperJSONCodec's constructor should not throw any exception", () => {
@@ -190,6 +191,9 @@ describe("SuperJSONCodec's encodeUnknown method should", () => {
       const fixture = sc2Unsupported;
 
       const detailedResult = unwrap(codec.encodeUnknown({ input: fixture }));
+      expect(detailedResult).toStrictEqual(
+        DetailedSuperJSONResultSchema<typeof fixture>().parse(detailedResult),
+      );
       assert(detailedResult.jsonSafe === false);
 
       const { output, issues } = detailedResult;
@@ -203,7 +207,9 @@ describe("SuperJSONCodec's encodeUnknown method should", () => {
       expect(input).toStrictEqual(fixture);
 
       // Testing issues
-      expect(() => JSON.stringify(issues)).not.toThrow();
+      const stringifiedIssues = JSON.stringify(issues);
+      const parsedIssues = JSON.parse(stringifiedIssues);
+      expect(issues).toStrictEqual(parsedIssues);
 
       assert(issues.format === "raw");
       expect(issues.value).toHaveLength(1);

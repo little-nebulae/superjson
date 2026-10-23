@@ -1,7 +1,12 @@
 import type { SuperJSON, SuperJSONResult, registerCustom } from "superjson";
 import type { Tagged, TypedArray } from "type-fest";
 
-export type JSONValue = SuperJSONResult["json"];
+export type PrimitiveJSONValue = string | number | boolean | undefined | null;
+export interface JSONArray extends Array<JSONValue> {}
+export interface JSONObject {
+  [key: string]: JSONValue;
+}
+export type JSONValue = PrimitiveJSONValue | JSONArray | JSONObject;
 
 export type SerializableJSONValue =
   | Set<SuperJSONValue>

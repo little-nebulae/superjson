@@ -5,6 +5,7 @@ export default defineConfig({
   platform: "neutral",
   exports: true,
   dts: true,
+  tsconfig: "./tsconfig.build.json",
   // Lint options
   publint: true,
   attw: true,

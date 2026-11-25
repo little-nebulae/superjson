@@ -1,5 +1,5 @@
 import { UNEXPECTED_ERROR_CODE, UnexpectedError } from "@little-nebulae/error";
-import { unwrap } from "@little-nebulae/result";
+import { unwrapResult } from "@little-nebulae/result";
 import {
   sc2BigIntTypedArrays,
   sc2Match,
@@ -27,48 +27,48 @@ describe("SuperJSONCodec's encode-decode methods should", () => {
     test("at handling data types supported by JSON.stringify", () => {
       const fixture = sc2Match;
 
-      const output = unwrap(codec.encode({ input: fixture }));
+      const output = unwrapResult(codec.encode({ input: fixture }));
       expect(output).toStrictEqual({ json: fixture });
 
       expect(() => JSON.stringify(output)).not.toThrow();
 
-      const input = unwrap(codec.decode({ output }));
+      const input = unwrapResult(codec.decode({ output }));
       expect(input).toStrictEqual(fixture);
     });
 
     test("at handling additional data types that are not supported by JSON.stringify but supported by superjson (this test doesn't cover error)", () => {
       const fixture = sc2Replay;
 
-      const output = unwrap(codec.encode({ input: fixture }));
+      const output = unwrapResult(codec.encode({ input: fixture }));
       expect(output.meta).toBeDefined();
 
       expect(() => JSON.stringify(output)).not.toThrow();
 
-      const input = unwrap(codec.decode({ output }));
+      const input = unwrapResult(codec.decode({ output }));
       expect(input).toStrictEqual(fixture);
     });
 
     test("at handling nested error", () => {
       const fixture = sc2NestedError;
 
-      const output = unwrap(codec.encode({ input: fixture }));
+      const output = unwrapResult(codec.encode({ input: fixture }));
       expect(output.meta).toBeDefined();
 
       expect(() => JSON.stringify(output)).not.toThrow();
 
-      const input = unwrap(codec.decode({ output }));
+      const input = unwrapResult(codec.decode({ output }));
       expect(input).toStrictEqual(fixture);
     });
 
     test("at handling bigint typed arrays", () => {
       const fixture = sc2BigIntTypedArrays;
 
-      const output = unwrap(codec.encode({ input: fixture }));
+      const output = unwrapResult(codec.encode({ input: fixture }));
       expect(output.meta).toBeDefined();
 
       expect(() => JSON.stringify(output)).not.toThrow();
 
-      const input = unwrap(codec.decode({ output }));
+      const input = unwrapResult(codec.decode({ output }));
       expect(input).toStrictEqual(fixture);
     });
   });
@@ -77,12 +77,12 @@ describe("SuperJSONCodec's encode-decode methods should", () => {
   test("succeed at handling nested custom error but the result will be lossy", () => {
     const fixture = sc2NestedCustomError;
 
-    const output = unwrap(codec.encode({ input: fixture }));
+    const output = unwrapResult(codec.encode({ input: fixture }));
     expect(output.meta).toBeDefined();
 
     expect(() => JSON.stringify(output)).not.toThrow();
 
-    const input = unwrap(codec.decode({ output }));
+    const input = unwrapResult(codec.decode({ output }));
     // Expect input to not be an instance of UnexpectedError like the fixture
     expect(input).not.toBeInstanceOf(UnexpectedError);
     expect(fixture).toBeInstanceOf(UnexpectedError);
@@ -127,7 +127,9 @@ describe("SuperJSONCodec's encodeUnknown method should", () => {
     test("handling data types supported by JSON.stringify", () => {
       const fixture = sc2Match;
 
-      const detailedResult = unwrap(codec.encodeUnknown({ input: fixture }));
+      const detailedResult = unwrapResult(
+        codec.encodeUnknown({ input: fixture }),
+      );
       assert(detailedResult.jsonSafe);
 
       const output = detailedResult.output;
@@ -135,14 +137,16 @@ describe("SuperJSONCodec's encodeUnknown method should", () => {
 
       expect(() => JSON.stringify(output)).not.toThrow();
 
-      const input = unwrap(codec.decode({ output }));
+      const input = unwrapResult(codec.decode({ output }));
       expect(input).toStrictEqual(fixture);
     });
 
     test("handling additional data types that are not supported by JSON.stringify but supported by superjson (this test doesn't cover error)", () => {
       const fixture = sc2Replay;
 
-      const detailedResult = unwrap(codec.encodeUnknown({ input: fixture }));
+      const detailedResult = unwrapResult(
+        codec.encodeUnknown({ input: fixture }),
+      );
       assert(detailedResult.jsonSafe);
 
       const output = detailedResult.output;
@@ -150,14 +154,16 @@ describe("SuperJSONCodec's encodeUnknown method should", () => {
 
       expect(() => JSON.stringify(output)).not.toThrow();
 
-      const input = unwrap(codec.decode({ output }));
+      const input = unwrapResult(codec.decode({ output }));
       expect(input).toStrictEqual(fixture);
     });
 
     test("handling nested error", () => {
       const fixture = sc2NestedError;
 
-      const detailedResult = unwrap(codec.encodeUnknown({ input: fixture }));
+      const detailedResult = unwrapResult(
+        codec.encodeUnknown({ input: fixture }),
+      );
       assert(detailedResult.jsonSafe);
 
       const output = detailedResult.output;
@@ -165,14 +171,16 @@ describe("SuperJSONCodec's encodeUnknown method should", () => {
 
       expect(() => JSON.stringify(output)).not.toThrow();
 
-      const input = unwrap(codec.decode({ output }));
+      const input = unwrapResult(codec.decode({ output }));
       expect(input).toStrictEqual(fixture);
     });
 
     test("handling bigint typed arrays", () => {
       const fixture = sc2BigIntTypedArrays;
 
-      const detailedResult = unwrap(codec.encodeUnknown({ input: fixture }));
+      const detailedResult = unwrapResult(
+        codec.encodeUnknown({ input: fixture }),
+      );
       assert(detailedResult.jsonSafe);
 
       const output = detailedResult.output;
@@ -180,7 +188,7 @@ describe("SuperJSONCodec's encodeUnknown method should", () => {
 
       expect(() => JSON.stringify(output)).not.toThrow();
 
-      const input = unwrap(codec.decode({ output }));
+      const input = unwrapResult(codec.decode({ output }));
       expect(input).toStrictEqual(fixture);
     });
   });
@@ -190,7 +198,9 @@ describe("SuperJSONCodec's encodeUnknown method should", () => {
     test("handling unsupported data types", () => {
       const fixture = sc2Unsupported;
 
-      const detailedResult = unwrap(codec.encodeUnknown({ input: fixture }));
+      const detailedResult = unwrapResult(
+        codec.encodeUnknown({ input: fixture }),
+      );
       expect(detailedResult).toStrictEqual(
         DetailedSuperJSONResultSchema<typeof fixture>().parse(detailedResult),
       );
@@ -203,7 +213,7 @@ describe("SuperJSONCodec's encodeUnknown method should", () => {
 
       expect(() => JSON.stringify(output)).not.toThrow();
 
-      const input = unwrap(codec.decode({ output }));
+      const input = unwrapResult(codec.decode({ output }));
       expect(input).toStrictEqual(fixture);
 
       // Testing issues

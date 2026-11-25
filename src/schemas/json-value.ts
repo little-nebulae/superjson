@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { JSONValue } from "@/types";
+import type { JSONValue } from "@/types/values";
 
 export const JSONValueSchema = z
   .json()

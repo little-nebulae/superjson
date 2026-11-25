@@ -1,10 +1,8 @@
 import { SuperJSON } from "superjson";
 
-import type {
-  CustomSuperJSON,
-  SuperJSONResultOf,
-  SuperJSONValue,
-} from "@/types";
+import type { CustomSuperJSON } from "@/types/custom";
+import type { SuperJSONResultOf } from "@/types/result-of";
+import type { SuperJSONValue } from "@/types/values";
 
 import { superjsonDecode } from "@/ops/decode";
 import { superjsonEncode } from "@/ops/encode";

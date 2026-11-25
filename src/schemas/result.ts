@@ -4,7 +4,7 @@ import {
 } from "@little-nebulae/zod-schemas";
 import { z } from "zod";
 
-import type { SuperJSONResultOf } from "@/types";
+import type { SuperJSONResultOf } from "@/types/result-of";
 
 import { JSONValueSchema } from "@/schemas/json-value";
 import { MinimisedTypeAnnotationTreeSchema } from "@/schemas/minimised-tree";

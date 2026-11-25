@@ -3,7 +3,8 @@ import type { Options } from "serialize-error";
 import { isError } from "@little-nebulae/error";
 import { deserializeError, serializeError } from "serialize-error";
 
-import type { CustomTransformer, JSONValue } from "@/types";
+import type { CustomTransformer } from "@/types/custom";
+import type { JSONValue } from "@/types/values";
 
 const options = { maxDepth: 100, useToJSON: true } satisfies Options;
 

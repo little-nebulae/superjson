@@ -2,7 +2,7 @@ export type { SuperJSONResult } from "superjson";
 export type * from "@/types/values";
 export type * from "@/types/custom";
 export type * from "@/types/result-of";
-export type * from "@/types/encoded-result";
+export type * from "@/lib/result/types";
 
 export * from "@/schemas/result";
 

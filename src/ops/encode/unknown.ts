@@ -3,7 +3,7 @@ import type { ZodIssue } from "@little-nebulae/zod-schemas";
 import type { SuperJSON } from "superjson";
 
 import { composeErrorMessage, UnexpectedError } from "@little-nebulae/error";
-import { attempt } from "@little-nebulae/result";
+import { produceResult } from "@little-nebulae/result";
 import { z } from "zod";
 
 import type { DetailedSuperJSONResult } from "@/schemas/result";
@@ -16,7 +16,7 @@ export function superjsonEncodeUnknown<T>({
   input: T;
   superjson: SuperJSON;
 }): Result<DetailedSuperJSONResult<T>, UnexpectedError> {
-  return attempt({
+  return produceResult({
     tryFn: () => {
       const output = superjson.serialize(input) as SuperJSONResultOf<T>;
       const parseJsonResult = z

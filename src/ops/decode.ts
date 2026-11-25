@@ -2,7 +2,7 @@ import type { SuperJSON } from "superjson";
 import type { GetTagMetadata } from "type-fest";
 
 import { composeErrorMessage, UnexpectedError } from "@little-nebulae/error";
-import { attempt } from "@little-nebulae/result";
+import { produceResult } from "@little-nebulae/result";
 
 import type { SuperJSONResultOf, SuperJSONResultOfTagName } from "@/types";
 
@@ -15,7 +15,7 @@ export function superjsonDecode<T extends SuperJSONResultOf<unknown>>({
   superjson: SuperJSON;
   inPlace?: boolean;
 }) {
-  return attempt({
+  return produceResult({
     tryFn: () => {
       const value = superjson.deserialize<
         GetTagMetadata<T, SuperJSONResultOfTagName>

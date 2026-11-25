@@ -27,24 +27,24 @@
     "try": "oxnode ./src/try.ts"
   },
   "dependencies": {
-    "serialize-error": "13.0.2",
-    "superjson": "2.2.6"
+    "serialize-error": "13.1.0",
+    "superjson": "2.2.7"
   },
   "devDependencies": {
     "@arethetypeswrong/core": "0.18.5",
-    "@little-nebulae/error": "1.4.0",
-    "@little-nebulae/result": "1.4.0",
-    "@little-nebulae/zod-schemas": "0.2.0",
-    "@oxc-node/cli": "1.0.0",
-    "@types/node": "26.6.5",
-    "oxfmt": "0.74.0",
-    "oxlint": "1.89.0",
-    "oxlint-tsgolint": "7.0.2004",
+    "@little-nebulae/error": "1.5.0",
+    "@little-nebulae/result": "1.6.1",
+    "@little-nebulae/zod-schemas": "0.3.0",
+    "@oxc-node/cli": "1.0.2",
+    "@types/node": "26.6.6",
+    "oxfmt": "0.80.0",
+    "oxlint": "1.95.0",
+    "oxlint-tsgolint": "7.0.2008",
     "publint": "0.3.25",
-    "tsdown": "0.23.1",
-    "type-fest": "5.10.0",
+    "tsdown": "0.23.7",
+    "type-fest": "6.0.3",
     "typescript": "7.0.2",
-    "vitest": "5.0.5",
+    "vitest": "5.1.1",
     "zod": "4.6.7"
   },
   "peerDependencies": {

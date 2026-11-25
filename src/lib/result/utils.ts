@@ -57,3 +57,21 @@ export async function produceAsyncEncodedResult<
     await finallyFn?.();
   }
 }
+
+export function unwrapEncodedResult<
+  TData extends EncodedData<unknown>,
+  TError extends FlatError<string, JsonValue>,
+>(result: EncodedResult<TData, TError>): TData {
+  if (result.success) {
+    return result.data;
+  }
+  throw result.error;
+}
+
+export async function unwrapAsyncEncodedResult<
+  TData extends EncodedData<unknown>,
+  TError extends FlatError<string, JsonValue>,
+>(asyncResult: AsyncEncodedResult<TData, TError>): Promise<TData> {
+  const result = await asyncResult;
+  return unwrapEncodedResult(result);
+}

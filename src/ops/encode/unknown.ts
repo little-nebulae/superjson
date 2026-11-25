@@ -7,7 +7,7 @@ import { produceResult } from "@little-nebulae/result";
 import { z } from "zod";
 
 import type { DetailedSuperJSONResult } from "@/schemas/result";
-import type { SuperJSONResultOf } from "@/types/tagged";
+import type { SuperJSONResultOf } from "@/types/result-of";
 
 export function superjsonEncodeUnknown<T>({
   input,

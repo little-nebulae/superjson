@@ -3,7 +3,7 @@ import type { SuperJSON } from "superjson";
 import { composeErrorMessage, UnexpectedError } from "@little-nebulae/error";
 import { produceResult } from "@little-nebulae/result";
 
-import type { SuperJSONResultOf } from "@/types/tagged";
+import type { SuperJSONResultOf } from "@/types/result-of";
 import type { SuperJSONValue } from "@/types/values";
 
 export function superjsonEncode<T extends SuperJSONValue>({

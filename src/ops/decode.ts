@@ -7,7 +7,7 @@ import { produceResult } from "@little-nebulae/result";
 import type {
   SuperJSONResultOf,
   SuperJSONResultOfTagName,
-} from "@/types/tagged";
+} from "@/types/result-of";
 
 export function superjsonDecode<T extends SuperJSONResultOf<unknown>>({
   output,

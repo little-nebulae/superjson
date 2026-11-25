@@ -4,20 +4,20 @@ import type { JsonValue } from "type-fest";
 import { createJsonFailure } from "@little-nebulae/result";
 
 import type {
+  AnyEncodedData,
   AsyncEncodedResult,
-  EncodedData,
   EncodedResult,
   EncodedSuccess,
 } from "@/lib/result/types";
 
-export function createEncodedSuccess<TData extends EncodedData<unknown>>(
+export function createEncodedSuccess<TData extends AnyEncodedData>(
   data: TData,
 ): EncodedSuccess<TData> {
   return { success: true, data };
 }
 
 export function produceEncodedResult<
-  TData extends EncodedData<unknown>,
+  TData extends AnyEncodedData,
   TError extends FlatError<string, JsonValue>,
 >({
   tryFn,
@@ -38,7 +38,7 @@ export function produceEncodedResult<
 }
 
 export async function produceAsyncEncodedResult<
-  TData extends EncodedData<unknown>,
+  TData extends AnyEncodedData,
   TError extends FlatError<string, JsonValue>,
 >({
   tryFn,
@@ -59,7 +59,7 @@ export async function produceAsyncEncodedResult<
 }
 
 export function unwrapEncodedResult<
-  TData extends EncodedData<unknown>,
+  TData extends AnyEncodedData,
   TError extends FlatError<string, JsonValue>,
 >(result: EncodedResult<TData, TError>): TData {
   if (result.success) {
@@ -69,7 +69,7 @@ export function unwrapEncodedResult<
 }
 
 export async function unwrapAsyncEncodedResult<
-  TData extends EncodedData<unknown>,
+  TData extends AnyEncodedData,
   TError extends FlatError<string, JsonValue>,
 >(asyncResult: AsyncEncodedResult<TData, TError>): Promise<TData> {
   const result = await asyncResult;

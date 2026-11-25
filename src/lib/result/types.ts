@@ -7,16 +7,18 @@ import type { SuperJSONResultOf } from "@/types/result-of";
 
 export type EncodedData<T> = SuperJSONResultOf<T> | DetailedSuperJSONResult<T>;
 
+export type AnyEncodedData = EncodedData<unknown>;
+
 export interface EncodedSuccess<
-  TData extends EncodedData<unknown>,
+  TData extends AnyEncodedData,
 > extends Success<TData> {}
 
 export type EncodedResult<
-  TData extends EncodedData<unknown>,
+  TData extends AnyEncodedData,
   TError extends FlatError<string, JsonValue>,
 > = EncodedSuccess<TData> | JsonFailure<TError>;
 
 export type AsyncEncodedResult<
-  TData extends EncodedData<unknown>,
+  TData extends AnyEncodedData,
   TError extends FlatError<string, JsonValue>,
 > = Promise<EncodedResult<TData, TError>>;

@@ -8,6 +8,5 @@ export * from "@/ops/encode/unknown";
 export * from "@/ops/decode";
 
 export * from "@/transformers/error";
-export * from "@/transformers/bigint-array";
 
 export * from "@/codec";

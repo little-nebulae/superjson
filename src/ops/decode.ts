@@ -4,7 +4,10 @@ import type { GetTagMetadata } from "type-fest";
 import { composeErrorMessage, UnexpectedError } from "@little-nebulae/error";
 import { produceResult } from "@little-nebulae/result";
 
-import type { SuperJSONResultOf, SuperJSONResultOfTagName } from "@/types";
+import type {
+  SuperJSONResultOf,
+  SuperJSONResultOfTagName,
+} from "@/types/tagged";
 
 export function superjsonDecode<T extends SuperJSONResultOf<unknown>>({
   output,

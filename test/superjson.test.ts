@@ -69,20 +69,17 @@ describe("superjson should succeed", () => {
   });
 });
 
-// Edge cases
+// Fixed cases
 describe("superjson should", () => {
-  test("succeed at handling bigint typed arrays but the result will make JSON.stringify throw a TypeError and deserialize throw an Error", () => {
+  test("succeed at handling bigint typed arrays in version >=2.2.6", () => {
     const fixture = sc2BigIntTypedArrays;
 
     const result = serialize(fixture);
     expect(result.meta).toBeDefined();
 
-    expect(() => JSON.stringify(result)).toThrow(
-      new TypeError("Do not know how to serialize a BigInt"),
-    );
+    expect(() => JSON.stringify(result)).not.toThrow();
 
-    expect(() => deserialize(result)).toThrow(
-      new Error("Trying to deserialize unknown typed array"),
-    );
+    const value = deserialize(result);
+    expect(value).toStrictEqual(fixture);
   });
 });

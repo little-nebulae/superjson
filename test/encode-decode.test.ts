@@ -1,4 +1,4 @@
-import { unwrap } from "@little-nebulae/result";
+import { unwrapResult } from "@little-nebulae/result";
 import { SuperJSON } from "superjson";
 import {
   sc2BigIntTypedArrays,
@@ -18,31 +18,31 @@ describe("superjsonEncode and superjsonDecode should succeed", () => {
   test("at handling data types supported by JSON.stringify", () => {
     const fixture = sc2Match;
 
-    const output = unwrap(superjsonEncode({ input: fixture, superjson }));
+    const output = unwrapResult(superjsonEncode({ input: fixture, superjson }));
     expect(output).toStrictEqual({ json: fixture });
 
     expect(() => JSON.stringify(output)).not.toThrow();
 
-    const input = unwrap(superjsonDecode({ output, superjson }));
+    const input = unwrapResult(superjsonDecode({ output, superjson }));
     expect(input).toStrictEqual(fixture);
   });
 
   test("at handling additional data types that are not supported by JSON.stringify but supported by them (this test doesn't cover error)", () => {
     const fixture = sc2Replay;
 
-    const output = unwrap(superjsonEncode({ input: fixture, superjson }));
+    const output = unwrapResult(superjsonEncode({ input: fixture, superjson }));
     expect(output.meta).toBeDefined();
 
     expect(() => JSON.stringify(output)).not.toThrow();
 
-    const input = unwrap(superjsonDecode({ output, superjson }));
+    const input = unwrapResult(superjsonDecode({ output, superjson }));
     expect(input).toStrictEqual(fixture);
   });
 
   test("at handling instance of Error and the result will be supported by JSON.stringify but it will be lossy", () => {
     const fixture = sc2Error;
 
-    const output = unwrap(superjsonEncode({ input: fixture, superjson }));
+    const output = unwrapResult(superjsonEncode({ input: fixture, superjson }));
     expect(output.meta).toBeDefined();
 
     const json = output.json;
@@ -54,7 +54,7 @@ describe("superjsonEncode and superjsonDecode should succeed", () => {
 
     expect(() => JSON.stringify(output)).not.toThrow();
 
-    const input = unwrap(superjsonDecode({ output, superjson }));
+    const input = unwrapResult(superjsonDecode({ output, superjson }));
     assert(input instanceof Error);
     expect(input).toMatchObject(fixture);
     expect(input).not.toStrictEqual(fixture);
@@ -67,7 +67,7 @@ describe("superjsonEncode and superjsonDecode should succeed", () => {
 test("superjsonEncode should succeed at handling bigint typed arrays but the result will make JSON.stringify throw a TypeError and cause superjsonDecode to fail", () => {
   const fixture = sc2BigIntTypedArrays;
 
-  const output = unwrap(superjsonEncode({ input: fixture, superjson }));
+  const output = unwrapResult(superjsonEncode({ input: fixture, superjson }));
   expect(output.meta).toBeDefined();
 
   expect(() => JSON.stringify(output)).toThrow(
